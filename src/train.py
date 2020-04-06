@@ -63,16 +63,16 @@ def generate(batch, size):
     """
 
     #  Using the data Augmentation in traning data
-    ptrain = 'data/train'
-    pval = 'data/validation'
+    ptrain = '../data/input/Training'
+    pval = '../data/input/PrivateTest'
 
     datagen1 = ImageDataGenerator(
         rescale=1. / 255,
-        shear_range=0.2,
-        zoom_range=0.2,
-        rotation_range=90,
-        width_shift_range=0.2,
-        height_shift_range=0.2,
+        shear_range=0.1,
+        zoom_range=[0.9, 1.1],
+        rotation_range=20,
+        width_shift_range=0.1,
+        height_shift_range=0.1,
         horizontal_flip=True)
 
     datagen2 = ImageDataGenerator(rescale=1. / 255)
@@ -81,12 +81,14 @@ def generate(batch, size):
         ptrain,
         target_size=(size, size),
         batch_size=batch,
+        color_mode="grayscale",
         class_mode='categorical')
 
     validation_generator = datagen2.flow_from_directory(
         pval,
         target_size=(size, size),
         batch_size=batch,
+        color_mode="grayscale",
         class_mode='categorical')
 
     count1 = 0
@@ -137,10 +139,10 @@ def train(batch, epochs, num_classes, size, weights, tclasses):
     train_generator, validation_generator, count1, count2 = generate(batch, size)
 
     if weights:
-        model = MobileNetv2((size, size, 3), tclasses)
+        model = MobileNetv2((size, size, 1), tclasses)
         model = fine_tune(num_classes, weights, model)
     else:
-        model = MobileNetv2((size, size, 3), num_classes)
+        model = MobileNetv2((size, size, 1), num_classes)
 
     opt = Adam()
     earlystop = EarlyStopping(monitor='val_acc', patience=30, verbose=0, mode='auto')

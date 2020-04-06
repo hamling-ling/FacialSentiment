@@ -174,5 +174,5 @@ def MobileNetv2(input_shape, k, alpha=1.0):
 
 
 if __name__ == '__main__':
-    model = MobileNetv2((224, 224, 3), 100, 1.0)
+    model = MobileNetv2((224, 224, 1), 100, 1.0)
     print(model.summary())
