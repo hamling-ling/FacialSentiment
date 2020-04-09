@@ -63,8 +63,8 @@ def generate(batch, size):
     """
 
     #  Using the data Augmentation in traning data
-    ptrain = '../data/input/Training'
-    pval = '../data/input/PrivateTest'
+    ptrain = '../../data/input/Training'
+    pval = '../../data/input/PrivateTest'
 
     datagen1 = ImageDataGenerator(
         rescale=1. / 255,
