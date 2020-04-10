@@ -43,7 +43,7 @@ def output_tensor(interpreter):
 
 def set_input(interpreter, data):
   """Copies data to input tensor."""
-  input_tensor(interpreter)[:, :] = data
+  input_tensor(interpreter)[:, :, 0] = data
 
 
 def get_output(interpreter, top_k=1, score_threshold=0.0):

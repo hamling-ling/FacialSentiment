@@ -73,50 +73,36 @@ def make_interpreter(model_file):
                                {'device': device[0]} if device else {})
       ])
 
+PATH_MODEL  = '../builtin_mobilenetv2-longrun_edgetpu.tflite'
+PATH_IMAGE  = '../../data/input/PublicTest/happiness/fer0028642.jpg'
+PATH_LABELS = '../labels.txt'
+TOP_K       = 1
+THRESHOLD   = 0.0
+REPEAT      = 5
 
 def main():
-  parser = argparse.ArgumentParser(
-      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-  parser.add_argument(
-      '-m', '--model', required=True, help='File path of .tflite file.')
-  parser.add_argument(
-      '-i', '--input', required=True, help='Image to be classified.')
-  parser.add_argument(
-      '-l', '--labels', help='File path of labels file.')
-  parser.add_argument(
-      '-k', '--top_k', type=int, default=1,
-      help='Max number of classification results')
-  parser.add_argument(
-      '-t', '--threshold', type=float, default=0.0,
-      help='Classification score threshold')
-  parser.add_argument(
-      '-c', '--count', type=int, default=5,
-      help='Number of times to run inference')
-  args = parser.parse_args()
-
-  labels = load_labels(args.labels) if args.labels else {}
-
-  interpreter = make_interpreter(args.model)
+  labels = load_labels(PATH_LABELS) if PATH_LABELS else {}
+  interpreter = make_interpreter(PATH_MODEL)
   interpreter.allocate_tensors()
 
   size = classify.input_size(interpreter)
-  image = Image.open(args.input).convert('RGB').resize(size, Image.ANTIALIAS)
+  # we need to convert to gray scale if source image is colored
+  # image = Image.open(args.input).convert('L').resize(size, Image.ANTIALIAS)
+  image = Image.open(PATH_IMAGE).resize(size, Image.ANTIALIAS)
+
   classify.set_input(interpreter, image)
 
   print('----INFERENCE TIME----')
   print('Note: The first inference on Edge TPU is slow because it includes',
         'loading the model into Edge TPU memory.')
-  for _ in range(args.count):
+  for _ in range(REPEAT):
     start = time.perf_counter()
     interpreter.invoke()
     inference_time = time.perf_counter() - start
-    classes = classify.get_output(interpreter, args.top_k, args.threshold)
+    classes = classify.get_output(interpreter, TOP_K, THRESHOLD)
     print('%.1fms' % (inference_time * 1000))
-
-  print('-------RESULTS--------')
-  for klass in classes:
-    print('%s: %.5f' % (labels.get(klass.id, klass.id), klass.score))
-
+    for klass in classes:
+        print('%d %s: %.5f' % (klass.id, labels[klass.id], klass.score))
 
 if __name__ == '__main__':
   main()
