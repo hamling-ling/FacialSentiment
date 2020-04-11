@@ -64,7 +64,6 @@ class Classifier():
         classes = edge_tpu.get_output(self.interpreter, TOP_K, THRESHOLD)
         ret = []
         for klass in classes:
-            print('%d %s: %.5f' % (klass.id, self.labels[klass.id], klass.score))
             return self.labels[klass.id], klass.score
         return None, None
 
