@@ -6,5 +6,10 @@ class Detector():
     self.net.setPreferableTarget(cv.dnn.DNN_TARGET_MYRIAD)
     
   def detect(self, image):
-    _, confidences, boxes = self.net.detect(image, confThreshold=0.5) 
-    return confidences, boxes
+    _, confidences, boxes = self.net.detect(image, confThreshold=0.5)
+    
+    ret = []
+    for conf, box in zip(list(confidences), boxes):
+      ret.append((conf, box))
+    
+    return ret
