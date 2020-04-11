@@ -53,7 +53,6 @@ class Classifier():
         self.interpreter.allocate_tensors()
 
         self.input_size = edge_tpu.input_size(self.interpreter)
-        print("input_size=", self.input_size, "type=", type(self.input_size))
     
     def get_input_size(self):
       return self.input_size
@@ -63,7 +62,11 @@ class Classifier():
         self.interpreter.invoke()
 
         classes = edge_tpu.get_output(self.interpreter, TOP_K, THRESHOLD)
+        ret = []
         for klass in classes:
             print('%d %s: %.5f' % (klass.id, self.labels[klass.id], klass.score))
+            return self.labels[klass.id], klass.score
+        return None, None
+
 if __name__ == '__main__':
   main()
