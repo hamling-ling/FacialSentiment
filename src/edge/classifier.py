@@ -47,28 +47,20 @@ class Classifier():
     def __init__(self, model_path, label_path):
         self.model_path = model_path
         self.label_path = label_path
-    
-    def initialize(self):
-        self.labels = load_labels(PATH_LABELS) if PATH_LABELS else {}
-        self.interpreter = make_interpreter(PATH_MODEL)
+
+        self.labels = load_labels(self.label_path)
+        self.interpreter = make_interpreter(self.model_path)
         self.interpreter.allocate_tensors()
 
-        self.input_size = classify.input_size(interpreter)
+        self.input_size = edge_tpu.input_size(self.interpreter)
     
     def predict(self, image):
-        w, h = img.shape[:2]
-        if(w != input_size[0] or h != input_size[1]) :
-            image = cv2.resize(img, (w, h))
-        
-        img_gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        edge_tpu.set_input(self.interpreter, image)
+        self.interpreter.invoke()
 
-        classify.set_input(interpreter, image)
-        interpreter.invoke()
-
-        classes = classify.get_output(interpreter, TOP_K, THRESHOLD)
-        print('%.1fms' % (inference_time * 1000))
+        classes = edge_tpu.get_output(self.interpreter, TOP_K, THRESHOLD)
         for klass in classes:
-            print('%d %s: %.5f' % (klass.id, labels[klass.id], klass.score))
+            print('%d %s: %.5f' % (klass.id, self.labels[klass.id], klass.score))
 
 if __name__ == '__main__':
   main()
