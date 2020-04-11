@@ -5,27 +5,34 @@ import image_utility as util
 import cv2 as cv
 from PIL import Image
 import numpy as np
+import pygame
+import os
 
 PATH_DETECTOR_MODEL_XML = 'models/face-detection-adas-0001.xml'
 PATH_DETECTOR_MODEL_BIN = 'models/face-detection-adas-0001.bin'
 PATH_CLASSIFIER_MODEL   = 'models/builtin_mobilenetv2-longrun_edgetpu.tflite'
 PATH_CLASSIFIER_LABEL   = 'models/labels.txt'
 
+# raspi screen = 728x480, window size=320x240
+# win pos = (728-480)/2, (480-240)/2
+os.environ['SDL_VIDEO_WINDOW_POS'] = "204,120"
 
 def main_loop(detector, classifier):
+    screen = pygame.display.set_mode((320, 240))
     cam, stream = st.open_camera()
     for frame in cam.capture_continuous(stream, format='bgr', use_video_port=True):
         stream.truncate()
         stream.seek(0)
-        process(detector, classifier, stream)
-        break
+        process(screen, detector, classifier, stream)
+        if(handle_key_event()):
+            break
 
-def process(detector, classifier, stream):
+def process(screen, detector, classifier, stream):
     boxes = process_face_detection(detector, stream.array)
 
     sentiments = process_sentiment_analysis(classifier, stream.array, boxes)
 
-    draw_results(stream.array, boxes, sentiments)
+    draw_results(screen, stream.array, boxes, sentiments)
 
 def process_face_detection(detector, image):
     # face detection
@@ -37,7 +44,6 @@ def process_face_detection(detector, image):
     for res in detection_results:
         confidence = res[0]
         box        = res[1]
-        print(confidence, box)
 
         clipped = util.clip_box(box, image.shape)
         if clipped is not None:
@@ -61,21 +67,33 @@ def process_sentiment_analysis(classifier, image, boxes):
         ret.append(result)
     return ret
 
-def draw_results(image, boxes, sentiments):
-    print("draw_result ", len(boxes), len(sentiments))
+def draw_results(screen, image, boxes, sentiments):
     for box, sen in zip(boxes, sentiments):
         cv.rectangle(image, box, color=(0, 255, 0))
         if sen is None:
             continue
         text = "{} {:.1f}%".format(sen[0], sen[1]*100)
-        print(text)
         cv.putText(image, text, (box[0], box[1]), cv.FONT_HERSHEY_PLAIN,
-            0.8, (255, 255, 255), 1, cv.LINE_AA)
+            1.2, (255, 255, 255), 1, cv.LINE_AA)
 
-    cv.imwrite('out.png', image)
+    #cv.imwrite('out.png', image)
+    #BGR -> RGB
+    rgb_img=image[:,:,::-1]
+    pyg_shape = image.shape[1::-1]
+    pyg_img = pygame.image.frombuffer(rgb_img.tostring(), pyg_shape, 'RGB')
+    screen.blit(pyg_img, (0, 0))
+    pygame.display.flip()
+
+def handle_key_event():
+    done = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+    return done
 
 def main():
     print('app started')
+    pygame.init()
     detector = dt.Detector(PATH_DETECTOR_MODEL_XML, PATH_DETECTOR_MODEL_BIN)
     classifier = cl.Classifier(PATH_CLASSIFIER_MODEL, PATH_CLASSIFIER_LABEL)
     main_loop(detector, classifier)
