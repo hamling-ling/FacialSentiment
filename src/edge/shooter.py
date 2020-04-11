@@ -10,7 +10,8 @@ def open_camera():
     camera.resolution = (CAMERA_WIDTH, CAMERA_HEIGHT)
     camera.led        = True
     camera.framerate  = 32
-    camera.hflip      = True
+    camera.hflip      = False
+    camera.vflip      = True
     rawCap            = PiRGBArray(camera, size=(CAMERA_WIDTH, CAMERA_HEIGHT))
 
     #warm up
