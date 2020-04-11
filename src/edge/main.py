@@ -28,13 +28,21 @@ def main_loop(detector, classifier):
             break
 
 def process(screen, detector, classifier, stream):
-    boxes = process_face_detection(detector, stream.array)
-
-    sentiments = process_sentiment_analysis(classifier, stream.array, boxes)
-
-    draw_results(screen, stream.array, boxes, sentiments)
+    try:
+        boxes = process_face_detection(detector, stream.array)
+        sentiments = process_sentiment_analysis(classifier, stream.array, boxes)
+        draw_results(screen, stream.array, boxes, sentiments)
+    except TypeError as err:
+        # this error raised sometimes from detector.detect(). and not solved yet
+        # so just ignore it an working around
+        print(err)
+        pass
 
 def process_face_detection(detector, image):
+    if image is None or image.shape is None:
+        print("invalid argument")
+        return None
+
     # face detection
     detection_results = detector.detect(image)
 
