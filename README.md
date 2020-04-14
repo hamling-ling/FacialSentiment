@@ -48,7 +48,7 @@ Note: The first inference on Edge TPU is slow because it includes loading the mo
 
 - Raspberry Pi
 - Edge TPU
-- Movidius NCS (when run complete app)
+
 
 #### Trainig
 
@@ -59,9 +59,41 @@ Note: The first inference on Edge TPU is slow because it includes loading the mo
 - PIL
 - Image Magick
 
+#### Application
+
+- All of prerequistes for Inference
+- Movidius NCS
+- PiCamera
+
 ## Running Complete App
 
-* T.B.D
+An complete application which perform face detection from camera then classify the emotion. The facedetection is computed on Movidius NCS and classification is on Edge TPU.
+
+### Testing Movidius NCS Setup
+
+To confirm movidius NCS setup. Run fllowing test app.
+
+```
+$ cd ../edge/test_movidius
+$ python3 openvino_fd_myriad.py
+```
+
+Then you'll get an output like this.
+```
+[1.] [319  86  40  51]
+[1.] [102 101  42  41]
+[1.] [217  94  38  51]
+```
+And file out.png created looks like this
+
+![out.png](https://hailing-ling-public.s3-ap-northeast-1.amazonaws.com/GitHub/fascialsentiment/output/out.png "face detection")
+
+### Running The Main App
+
+```
+cd ../
+python3 main.py
+```
 
 ## Training
 
