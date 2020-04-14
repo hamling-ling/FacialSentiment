@@ -95,6 +95,8 @@ cd ../
 python3 main.py
 ```
 
+[![demo video](http://img.youtube.com/vi/6V4uWtrVqx0/0.jpg)](http://www.youtube.com/watch?v=6V4uWtrVqx0 "demo video")
+
 ## Training
 
 * T.B.D
