@@ -8,10 +8,10 @@ import numpy as np
 import pygame
 import os
 
-PATH_DETECTOR_MODEL_XML = 'models/face-detection-adas-0001.xml'
-PATH_DETECTOR_MODEL_BIN = 'models/face-detection-adas-0001.bin'
-PATH_CLASSIFIER_MODEL   = 'models/builtin_mobilenetv2-longrun_edgetpu.tflite'
-PATH_CLASSIFIER_LABEL   = 'models/labels.txt'
+PATH_DETECTOR_MODEL_XML = '../model/face-detection-adas-0001.xml'
+PATH_DETECTOR_MODEL_BIN = '../model/face-detection-adas-0001.bin'
+PATH_CLASSIFIER_MODEL   = '../model/builtin_mobilenetv2-longrun_edgetpu.tflite'
+PATH_CLASSIFIER_LABEL   = '../model/labels.txt'
 
 # raspi screen = 728x480, window size=320x240
 # win pos = (728-480)/2, (480-240)/2

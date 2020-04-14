@@ -73,9 +73,9 @@ def make_interpreter(model_file):
                                {'device': device[0]} if device else {})
       ])
 
-PATH_MODEL  = '../../builtin_mobilenetv2-longrun_edgetpu.tflite'
+PATH_MODEL  = '../../model/builtin_mobilenetv2-longrun_edgetpu.tflite'
 PATH_IMAGE  = '../../../data/input/PublicTest/happiness/fer0028642.jpg'
-PATH_LABELS = '../../labels.txt'
+PATH_LABELS = '../../model/labels.txt'
 TOP_K       = 1
 THRESHOLD   = 0.0
 REPEAT      = 5

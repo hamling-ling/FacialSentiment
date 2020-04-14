@@ -1,7 +1,7 @@
 import cv2 as cv
 
-net = cv.dnn_DetectionModel('../models/face-detection-adas-0001.xml',
-                            '../models/face-detection-adas-0001.bin')
+net = cv.dnn_DetectionModel('../model/face-detection-adas-0001.xml',
+                            '../model/face-detection-adas-0001.bin')
 net.setPreferableTarget(cv.dnn.DNN_TARGET_MYRIAD)
 
 frame = cv.imread('sample.bmp')
