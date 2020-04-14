@@ -74,7 +74,7 @@ def make_interpreter(model_file):
       ])
 
 PATH_MODEL  = '../../model/builtin_mobilenetv2-longrun_edgetpu.tflite'
-PATH_IMAGE  = '../../../data/input/PublicTest/happiness/fer0028642.jpg'
+PATH_IMAGE  = '../../sample/happy.jpg'
 PATH_LABELS = '../../model/labels.txt'
 TOP_K       = 1
 THRESHOLD   = 0.0
