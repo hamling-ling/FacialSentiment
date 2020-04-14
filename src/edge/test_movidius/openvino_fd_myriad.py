@@ -1,10 +1,10 @@
 import cv2 as cv
 
-net = cv.dnn_DetectionModel('../models/face-detection-adas-0001.xml',
-                            '../models/face-detection-adas-0001.bin')
+net = cv.dnn_DetectionModel('../../model/face-detection-adas-0001.xml',
+                            '../../model/face-detection-adas-0001.bin')
 net.setPreferableTarget(cv.dnn.DNN_TARGET_MYRIAD)
 
-frame = cv.imread('sample.bmp')
+frame = cv.imread('../../sample/sample.bmp')
 if frame is None:
     raise Exception('Image not found')
 
@@ -15,5 +15,3 @@ for confidence, box in zip(list(confidences), boxes):
     print(confidence, box)
 
 cv.imwrite('out.png', frame)
-
-
