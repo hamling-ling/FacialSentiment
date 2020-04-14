@@ -67,11 +67,11 @@ Note: The first inference on Edge TPU is slow because it includes loading the mo
 
 ## Running Complete App
 
-An complete application which perform face detection from camera then classify the emotion. The facedetection is computed on Movidius NCS and classification is on Edge TPU.
+A complete application which performs face detection from camera then classifies the emotion into 9 categories. The face detection is computed on Movidius NCS and classification is on Edge TPU.
 
 ### Testing Movidius NCS Setup
 
-To confirm movidius NCS setup. Run fllowing test app.
+To confirm movidius NCS setup, You can run fllowing test.
 
 ```
 $ cd ../edge/test_movidius
@@ -90,6 +90,7 @@ And file out.png created looks like this
 
 ### Running The Main App
 
+After everything is set, run following to start raspberry pi application.
 ```
 cd ../
 python3 main.py
