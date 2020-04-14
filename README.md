@@ -100,7 +100,32 @@ python3 main.py
 
 ## Training
 
-* T.B.D
+### Download Datasets
+
+1. Go to following site and get fer2013.tar.gz. You need to register to Kaggle for free if you don't have an account.
+   https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data
+2. I used labels from FER+. Grub fer2013new.csv from following link.
+   https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data
+3. Create data/raw directory and plece following files.
+   - data/raw/fer2013.csv
+   - data/raw/fer2013new.csv
+
+### Data Preparation
+1. Open src/dataprep/create_datasets.ipynb in Jupyter notebook and run all cells.
+   It creates roughly 30K files of 32x32 grayscale png images under data/input/ directory.
+2. We need to convert those files into 96x96 8bit grayscale jpg.
+```
+$ cd src/dataprep
+$ ./scale96x96grayjpg.sh
+```
+### Training
+1. Open up asrc/train.ipynb in Jupyter notebook and run all. It takes more than 5 hours with GTX1060.
+   Then you'll get following files.
+   - model/labels.txt
+   - model/builtin_mobilenetv2-longrun.h5
+   - model/builtin_mobilenetv2-longrun.tflite
+2. If you want to inference on PC, use h5 file and model/inference.ipynb
+   And if you only want to convert from h5 to tflite, use convert.ipynb
 
 ## Contributing
 
