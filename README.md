@@ -47,8 +47,8 @@ Note: The first inference on Edge TPU is slow because it includes loading the mo
 #### Inference
 
 - Raspberry Pi
+- python3
 - Edge TPU
-
 
 #### Trainig
 
