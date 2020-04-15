@@ -119,12 +119,14 @@ $ cd src/dataprep
 $ ./scale96x96grayjpg.sh
 ```
 ### Training
-1. Open up asrc/train.ipynb in Jupyter notebook and run all. It takes more than 5 hours with GTX1060.
+1. Open up src/train.ipynb in Jupyter notebook and run all. It takes more than 5 hours with GTX1060.
    Then you'll get following files.
    - model/labels.txt
    - model/builtin_mobilenetv2-longrun.h5
    - model/builtin_mobilenetv2-longrun.tflite
-2. If you want to inference on PC, use h5 file and model/inference.ipynb
+2. In the above training notebook, you will see the training curve like thks.
+   ![facialsentiments30eps_up.png](https://hailing-ling-public.s3-ap-northeast-1.amazonaws.com/GitHub/fascialsentiment/output/facialsentiment30eps_up.png "training curve")
+3. If you want to inference on PC, use h5 file and model/inference.ipynb
    And if you only want to convert from h5 to tflite, use convert.ipynb
 
 ## Contributing
